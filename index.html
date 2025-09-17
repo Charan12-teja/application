@@ -1,0 +1,88 @@
+<!doctype html>
+todos = todos.map(t => t.id === id ? { ...t, done: !t.done } : t);
+save();
+}
+
+
+function removeTodo(id) {
+todos = todos.filter(t => t.id !== id);
+save();
+}
+
+
+function clearCompleted() {
+todos = todos.filter(t => !t.done);
+save();
+}
+
+
+function render() {
+list.innerHTML = '';
+if (todos.length === 0) {
+list.innerHTML = '<li class="empty">No tasks — add one!</li>';
+} else {
+todos.forEach(t => {
+const li = document.createElement('li');
+
+
+const left = document.createElement('div');
+left.className = 'left';
+
+
+const checkbox = document.createElement('input');
+checkbox.type = 'checkbox';
+checkbox.checked = t.done;
+checkbox.addEventListener('change', () => toggleDone(t.id));
+
+
+const span = document.createElement('div');
+span.className = 'task' + (t.done ? ' completed' : '');
+span.textContent = t.text;
+
+
+left.appendChild(checkbox);
+left.appendChild(span);
+
+
+const right = document.createElement('div');
+
+
+const del = document.createElement('button');
+del.className = 'small-btn';
+del.textContent = 'Delete';
+del.addEventListener('click', () => removeTodo(t.id));
+
+
+right.appendChild(del);
+
+
+li.appendChild(left);
+li.appendChild(right);
+
+
+list.appendChild(li);
+});
+}
+
+
+countEl.textContent = todos.length;
+}
+
+
+// Events
+form.addEventListener('submit', e => {
+e.preventDefault();
+addTodo(input.value);
+});
+
+
+clearBtn.addEventListener('click', () => {
+clearCompleted();
+});
+
+
+// initial render
+render();
+</script>
+</body>
+</html>
